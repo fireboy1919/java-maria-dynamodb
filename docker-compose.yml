@@ -1,0 +1,27 @@
+version: '2'
+
+services:
+  microservice:
+    build:
+      context: "."
+      dockerfile: Dockerfile
+    container_name: microservice
+    links:
+      - mariadb
+      - dynamodb
+  mariadb:
+    image: 'mariadb:latest'
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    volumes:
+      - "mariadb:/var/lib/mysql"
+    ports:
+      - '3306:3306'
+  dynamodb:
+    image: 'peopleperhour/dynamodb'
+    volumes:
+      - "dynamodb:/var/dynamodb_local"
+
+volumes:
+  mariadb:
+  dynamodb:
